@@ -42,9 +42,7 @@
                 <Image Source="D:\Users\Marcus\source\repos\PUBG Live statistics\PUBG Live statistics\resources\Discord White.png"/>
             </StackPanel>
         </Button>
-
-        <TextBlock x:Name="LOG_Text" FontSize="12" FontWeight="Bold" Foreground="White" Text="LOG" Margin="0,355,255,37" Visibility="Visible"></TextBlock>
-
+        
         <TextBox x:Name="PlayerID" Margin="575 10 0 360" ToolTip="Enter a PlayerName to lookup! Case Sensitive" KeyDown="PlayerLookupKeyDown" ></TextBox>
         <Button Margin="575 50 0 300" Background="Orange" Cursor="Hand" Click="PlayerLookupClick" Content="Request a player lookup"></Button>
 

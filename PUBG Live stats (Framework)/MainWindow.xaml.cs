@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace PUBG_Live_stats__Framework_
     {
@@ -17,12 +18,14 @@ namespace PUBG_Live_stats__Framework_
     public partial class MainWindow : Window
         {
         public static string Output_path_text_string;
+        public static bool runScanner = false;
 
         public MainWindow()
             {
             InitializeComponent();
             Output_path.Text = $@"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\PUBG Live stats";
             Output_path_text_string = Output_path_text.Text;
+            MainScanner();
             }
 
         //EventHandlers
@@ -57,7 +60,6 @@ namespace PUBG_Live_stats__Framework_
                     try
                         {
                         ftpClient.OpenWrite($"ftp://{FTP_URL.Text}/connection.con");
-                        LOG_Text.Text = $"Successfully opened a connection to {FTP_URL.Text}";
                         ftpClient.Dispose();
                         }
                     catch (Exception)
@@ -73,55 +75,8 @@ namespace PUBG_Live_stats__Framework_
                     Uploadtoftp_check.IsChecked = false;
                     }
                 }
-            //Thread.Sleep(3000); //DEBUGGING
-            //Take a screenshot of a snippet of the screen, this is the area where the in game log is
-            int _x = Convert.ToInt32(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width * 0.21875), _y = Convert.ToInt32(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height * 0.0925925925925926 * 0.23);
-            Rectangle rect = new Rectangle(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - _x, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Y + Convert.ToInt32(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height * 0.0925925925925926 * 0.77), _x, _y); //
-            Bitmap bmp = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(bmp);
-            g.CopyFromScreen(rect.Left, rect.Top, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
-
-            //Convert above bitmap to a grayscale image for greater OCR successrate
-            using (Graphics gr = Graphics.FromImage(bmp)) //SourceImage is a Bitmap object
-                {
-                float[][] gray_matrix = new float[][] {
-                new float[] { 0.299f, 0.299f, 0.299f, 0, 0 },
-                new float[] { 0.587f, 0.587f, 0.587f, 0, 0 },
-                new float[] { 0.114f, 0.114f, 0.114f, 0, 0 },
-                new float[] { 0,      0,      0,      1, 0 },
-                new float[] { 0,      0,      0,      0, 1 }
-            };
-                System.Drawing.Imaging.ImageAttributes ia = new System.Drawing.Imaging.ImageAttributes();
-                ia.SetColorMatrix(new System.Drawing.Imaging.ColorMatrix(gray_matrix));
-                ia.SetThreshold(0.6f); //Change this threshold as needed
-                Rectangle rc = new Rectangle(0, 0, bmp.Width, bmp.Height);
-                gr.DrawImage(bmp, rc, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, ia);
-                }
-
-            ////Save the screenshot as a .tiff file
-            //bmp.Save($@"{Output_path.Text}\ocr.tiff", System.Drawing.Imaging.ImageFormat.Tiff);
-
-            //Use advancedOcr to read the image
-            AdvancedOcr Ocr = new AdvancedOcr()
-                {
-                CleanBackgroundNoise = false,
-                EnhanceContrast = false,
-                EnhanceResolution = false,
-                Language = IronOcr.Languages.English.OcrLanguagePack,
-                Strategy = AdvancedOcr.OcrStrategy.Fast,
-                ColorSpace = AdvancedOcr.OcrColorSpace.GrayScale,
-                DetectWhiteTextOnDarkBackgrounds = false,
-                InputImageType = AdvancedOcr.InputTypes.Snippet,
-                RotateAndStraighten = false,
-                ReadBarCodes = false,
-                ColorDepth = 2
-                };
-            OcrResult Results = Ocr.Read(bmp);
-            //OcrResult Results = Ocr.Read($@"{Output_path.Text}\ocr.tiff");
-            //Results.SaveAsTextFile($@"{Output_path.Text}\ocr.txt");
-            LOG_Text.Text = "LOG \"" + Results.Text + "\"";
-
             Program_state.Content = "Live tracker (ON)";
+            runScanner = true;
             }
 
         /// <summary>
@@ -139,6 +94,7 @@ namespace PUBG_Live_stats__Framework_
             Output_path_text.Text = Output_path_text_string;
 
             Program_state.Content = "Live tracker (OFF)";
+            runScanner = false;
             }
 
         /// <summary>
@@ -274,7 +230,8 @@ namespace PUBG_Live_stats__Framework_
             //If playerID is not empty, launch
             if (!(PlayerID.Text.Equals("")))
                 {
-                string url = $@"https://pubg-stats.com/profile/{PlayerID.Text}";
+                //string url = $@"https://pubg-stats.com/profile/{PlayerID.Text}";
+                string url = $@"https://pubglookup.com/players/steam/{PlayerID.Text}";
                 LaunchWeb(url);
                 }
             else
@@ -304,6 +261,26 @@ namespace PUBG_Live_stats__Framework_
                 }
             catch (WebException)
                 { }
+            }
+
+        /// <summary>
+        /// Main loop for running the scanner
+        /// </summary>
+        public static async void MainScanner()
+            {
+            await Task.Delay(500);
+            while (!runScanner)
+                {
+                Console.WriteLine("OFF");
+                await Task.Delay(500);
+
+                while (runScanner)
+                    {
+                    Console.WriteLine("ON");
+                    await Task.Delay(500);
+                    }
+
+                }
             }
 
         }

@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PUBG Live stats (Framework)")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("PUBG Live stats")]
+[assembly: AssemblyDescription("PUBG Live stats is an easy to use tool for quickly grabbing your kills and deaths in real time!")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PUBG Live stats (Framework)")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyProduct("PUBG Live stats")]
+[assembly: AssemblyCopyright("Copyright © tsgsOFFICIAL, 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
