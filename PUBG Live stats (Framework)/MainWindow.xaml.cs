@@ -18,12 +18,14 @@ namespace PUBG_Live_stats__Framework_
     public partial class MainWindow : Window
         {
         public static string Output_path_text_string;
+        public static string OutputPath = null;
         public static bool runScanner = false;
 
         public MainWindow()
             {
             InitializeComponent();
             Output_path.Text = $@"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\PUBG Live stats";
+            OutputPath = Output_path.Text;
             Output_path_text_string = Output_path_text.Text;
             MainScanner();
             }
@@ -268,6 +270,7 @@ namespace PUBG_Live_stats__Framework_
         /// </summary>
         public static async void MainScanner()
             {
+            System.Collections.Generic.List<string> readOuts = new System.Collections.Generic.List<string>(); //Initialize a new List string, adding all of the OCR readouts to it
             await Task.Delay(500);
             while (!runScanner)
                 {
@@ -277,9 +280,20 @@ namespace PUBG_Live_stats__Framework_
                 while (runScanner)
                     {
                     Console.WriteLine("ON");
-                    await Task.Delay(500);
+                    ImageProcessor img = new ImageProcessor();
+                    OcrResult result = img.ReadOCR(img.GrayscaleImage(img.CaptureScreen()));
+                    result.SaveAsTextFile($@"{OutputPath}\ocr.txt");
+                    readOuts.Add(result.Text);
+                        await Task.Delay(500);
                     }
 
+                StreamWriter writer = new StreamWriter($@"{OutputPath}\ocr.txt");
+                for (int i = 0; i < readOuts.Count; i++)
+                    {
+                    writer.WriteLine(readOuts[i]);
+                    }
+                readOuts.Clear();
+                writer.Close();
                 }
             }
 
