@@ -24,7 +24,6 @@ namespace PUBG_Live_stats__Framework_
             {
             InitializeComponent();
             Output_path.Text = $@"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\PUBG Live stats";
-            OutputPath = Output_path.Text;
             Output_path_text_string = Output_path_text.Text;
             MainScanner();
             }
@@ -38,6 +37,7 @@ namespace PUBG_Live_stats__Framework_
         /// <param name="e"></param>
         private void Program_state_Checked(object sender, RoutedEventArgs e)
             {
+            OutputPath = Output_path.Text;
             //Create directory if it doesn't exist.
             if (!Directory.Exists(Output_path.Text))
                 {
@@ -276,7 +276,9 @@ namespace PUBG_Live_stats__Framework_
                 while (runScanner)
                     {
                     ImageProcessor img = new ImageProcessor();
-                    TextProcessor.CheckString(img.ReadOCR(img.GrayscaleImage(img.CaptureScreen())));
+                    string _temp = img.ReadOCR(img.GrayscaleImage(img.CaptureScreen()));
+                    TextProcessor.CheckString(_temp);
+                    Console.WriteLine(_temp);
                     await Task.Delay(500);
                     if (!runScanner)
                         {

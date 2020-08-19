@@ -43,11 +43,11 @@ namespace PUBG_Live_stats__Framework_
             };
                 System.Drawing.Imaging.ImageAttributes ia = new System.Drawing.Imaging.ImageAttributes();
                 ia.SetColorMatrix(new System.Drawing.Imaging.ColorMatrix(gray_matrix));
-                ia.SetThreshold(0.615f); //Change this threshold as needed
+                ia.SetThreshold(0.76f); //Change this threshold as needed
                 Rectangle rc = new Rectangle(0, 0, bmp.Width, bmp.Height);
                 gr.DrawImage(bmp, rc, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, ia);
                 }
-            //bmp.Save(@"C:\Users\Marcus\Desktop\PUBG Live stats\orc.png");
+            bmp.Save(@"C:\Users\Marcus\Desktop\PUBG Live stats\ocr.png");
             return bmp;
             }
 
