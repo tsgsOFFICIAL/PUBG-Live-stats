@@ -1,5 +1,4 @@
 ﻿using System;
-using IronOcr;
 using System.IO;
 using System.Net;
 using System.Windows;
@@ -280,9 +279,8 @@ namespace PUBG_Live_stats__Framework_
                     {
                     Console.WriteLine("ON");
                     ImageProcessor img = new ImageProcessor();
-                    OcrResult result = img.ReadOCR(img.GrayscaleImage(img.CaptureScreen()));
-                    result.SaveAsTextFile($@"{OutputPath}\ocr.txt");
-                    readOuts.Add(result.Text);
+                    string result = img.ReadOCR(img.GrayscaleImage(img.CaptureScreen()));
+                    readOuts.Add(result);
                     await Task.Delay(500);
                     if (!runScanner)
                         {

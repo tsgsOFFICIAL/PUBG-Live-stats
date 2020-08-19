@@ -1,5 +1,5 @@
 ﻿using System;
-using IronOcr;
+using Tesseract;
 using System.Drawing;
 
 namespace PUBG_Live_stats__Framework_
@@ -43,7 +43,7 @@ namespace PUBG_Live_stats__Framework_
             };
                 System.Drawing.Imaging.ImageAttributes ia = new System.Drawing.Imaging.ImageAttributes();
                 ia.SetColorMatrix(new System.Drawing.Imaging.ColorMatrix(gray_matrix));
-                ia.SetThreshold(0.6f); //Change this threshold as needed
+                ia.SetThreshold(0.7f); //Change this threshold as needed
                 Rectangle rc = new Rectangle(0, 0, bmp.Width, bmp.Height);
                 gr.DrawImage(bmp, rc, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, ia);
                 }
@@ -56,24 +56,11 @@ namespace PUBG_Live_stats__Framework_
         /// </summary>
         /// <param name="bmp">This bitmap is the final, processed version</param>
         /// <returns>The OcrResult object</returns>
-        public OcrResult ReadOCR(Bitmap bmp)
+        public string ReadOCR(Bitmap bmp)
             {
-            AdvancedOcr Ocr = new AdvancedOcr()
-                {
-                CleanBackgroundNoise = false,
-                EnhanceContrast = false,
-                EnhanceResolution = false,
-                Language = IronOcr.Languages.English.OcrLanguagePack,
-                Strategy = AdvancedOcr.OcrStrategy.Fast,
-                ColorSpace = AdvancedOcr.OcrColorSpace.GrayScale,
-                DetectWhiteTextOnDarkBackgrounds = false,
-                InputImageType = AdvancedOcr.InputTypes.Snippet,
-                RotateAndStraighten = false,
-                ReadBarCodes = false,
-                ColorDepth = 2
-                };
-
-            return Ocr.Read(bmp);
+            TesseractEngine Ocr = new TesseractEngine("eng.traineddata", "eng", EngineMode.TesseractAndCube);
+            Page page = Ocr.Process(bmp);
+            return page.GetText();
             }
 
         }
