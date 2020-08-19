@@ -284,16 +284,19 @@ namespace PUBG_Live_stats__Framework_
                     OcrResult result = img.ReadOCR(img.GrayscaleImage(img.CaptureScreen()));
                     result.SaveAsTextFile($@"{OutputPath}\ocr.txt");
                     readOuts.Add(result.Text);
-                        await Task.Delay(500);
+                    await Task.Delay(500);
+                    if (!runScanner)
+                        {
+                        StreamWriter writer = new StreamWriter($@"{OutputPath}\end.txt");
+                        for (int i = 0; i < readOuts.Count; i++)
+                            {
+                            writer.WriteLine(readOuts[i]);
+                            }
+                        readOuts.Clear();
+                        writer.Close();
+                        }
                     }
 
-                StreamWriter writer = new StreamWriter($@"{OutputPath}\ocr.txt");
-                for (int i = 0; i < readOuts.Count; i++)
-                    {
-                    writer.WriteLine(readOuts[i]);
-                    }
-                readOuts.Clear();
-                writer.Close();
                 }
             }
 
