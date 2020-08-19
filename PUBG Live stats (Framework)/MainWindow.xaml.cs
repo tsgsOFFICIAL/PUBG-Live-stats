@@ -271,11 +271,10 @@ namespace PUBG_Live_stats__Framework_
         public static async void MainScanner()
             {
             System.Collections.Generic.List<string> readOuts = new System.Collections.Generic.List<string>(); //Initialize a new List string, adding all of the OCR readouts to it
-            await Task.Delay(500);
             while (!runScanner)
                 {
-                Console.WriteLine("OFF");
                 await Task.Delay(500);
+                Console.WriteLine("OFF");
 
                 while (runScanner)
                     {
