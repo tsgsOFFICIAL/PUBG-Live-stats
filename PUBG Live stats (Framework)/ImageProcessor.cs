@@ -58,7 +58,7 @@ namespace PUBG_Live_stats__Framework_
         /// <returns>The OcrResult object</returns>
         public string ReadOCR(Bitmap bmp)
             {
-            TesseractEngine Ocr = new TesseractEngine("eng.traineddata", "eng", EngineMode.TesseractAndCube);
+            TesseractEngine Ocr = new TesseractEngine("./tessdata", "eng", EngineMode.TesseractAndCube);
             Page page = Ocr.Process(bmp);
             return page.GetText();
             }
