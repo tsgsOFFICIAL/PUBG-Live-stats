@@ -289,7 +289,7 @@ namespace PUBG_Live_stats__Framework_
                         StreamWriter writer = new StreamWriter($@"{OutputPath}\end.txt");
                         for (int i = 0; i < readOuts.Count; i++)
                             {
-                            writer.WriteLine(i.ToString() + readOuts[i]);
+                            writer.WriteLine(i.ToString() + " - " + readOuts[i]);
                             }
                         readOuts.Clear();
                         writer.Close();
