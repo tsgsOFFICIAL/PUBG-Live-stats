@@ -43,11 +43,11 @@ namespace PUBG_Live_stats__Framework_
             };
                 System.Drawing.Imaging.ImageAttributes ia = new System.Drawing.Imaging.ImageAttributes();
                 ia.SetColorMatrix(new System.Drawing.Imaging.ColorMatrix(gray_matrix));
-                ia.SetThreshold(0.7f); //Change this threshold as needed
+                ia.SetThreshold(0.615f); //Change this threshold as needed
                 Rectangle rc = new Rectangle(0, 0, bmp.Width, bmp.Height);
                 gr.DrawImage(bmp, rc, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, ia);
                 }
-
+            bmp.Save(@"C:\Users\Marcus\Desktop\PUBG Live stats\orc.png");
             return bmp;
             }
 
@@ -58,7 +58,7 @@ namespace PUBG_Live_stats__Framework_
         /// <returns>The OcrResult object</returns>
         public string ReadOCR(Bitmap bmp)
             {
-            TesseractEngine Ocr = new TesseractEngine("./tessdata", "eng", EngineMode.TesseractAndCube);
+            TesseractEngine Ocr = new TesseractEngine("./tessdata", "eng");
             Page page = Ocr.Process(bmp);
             return page.GetText();
             }
