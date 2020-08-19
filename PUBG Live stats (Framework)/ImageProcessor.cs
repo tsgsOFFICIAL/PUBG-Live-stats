@@ -56,7 +56,8 @@ namespace PUBG_Live_stats__Framework_
         /// </summary>
         /// <param name="bmp">This bitmap is the final, processed version</param>
         /// <returns>The OcrResult object</returns>
-        public OcrResult ReadOCR(Bitmap bmp) {
+        public OcrResult ReadOCR(Bitmap bmp)
+            {
             AdvancedOcr Ocr = new AdvancedOcr()
                 {
                 CleanBackgroundNoise = false,
