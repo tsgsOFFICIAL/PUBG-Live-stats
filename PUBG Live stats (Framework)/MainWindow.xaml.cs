@@ -269,33 +269,24 @@ namespace PUBG_Live_stats__Framework_
         /// </summary>
         public static async void MainScanner()
             {
-            System.Collections.Generic.List<string> readOuts = new System.Collections.Generic.List<string>(); //Initialize a new List string, adding all of the OCR readouts to it
             while (!runScanner)
                 {
                 await Task.Delay(500);
-                Console.WriteLine("OFF");
 
                 while (runScanner)
                     {
-                    Console.WriteLine("ON");
                     ImageProcessor img = new ImageProcessor();
-                    string result = img.ReadOCR(img.GrayscaleImage(img.CaptureScreen()));
-                    readOuts.Add(result);
+                    TextProcessor.CheckString(img.ReadOCR(img.GrayscaleImage(img.CaptureScreen())));
                     await Task.Delay(500);
                     if (!runScanner)
                         {
-                        StreamWriter writer = new StreamWriter($@"{OutputPath}\end.txt");
-                        for (int i = 0; i < readOuts.Count; i++)
-                            {
-                            writer.WriteLine(i.ToString() + " - " + readOuts[i]);
-                            }
-                        readOuts.Clear();
-                        writer.Close();
+                        TextProcessor.OutputToFile(OutputPath);
                         }
                     }
 
                 }
             }
 
-        }
-    }
+
+        } //Class
+    } //Namespace
