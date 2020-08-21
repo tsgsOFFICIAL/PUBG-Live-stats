@@ -269,16 +269,14 @@ namespace PUBG_Live_stats__Framework_
         /// </summary>
         public static async void MainScanner()
             {
+            ImageProcessor img = new ImageProcessor();
             while (!runScanner)
                 {
                 await Task.Delay(500);
 
                 while (runScanner)
                     {
-                    ImageProcessor img = new ImageProcessor();
-                    string _temp = img.ReadOCR(img.GrayscaleImage(img.CaptureScreen()));
-                    TextProcessor.CheckString(_temp);
-                    Console.WriteLine(_temp);
+                    TextProcessor.CheckString(img.ReadOCR(img.GrayscaleImage(img.CaptureScreen())));
                     await Task.Delay(500);
                     if (!runScanner)
                         {

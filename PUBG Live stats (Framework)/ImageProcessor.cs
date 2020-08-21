@@ -1,5 +1,6 @@
 ﻿using System;
 using Tesseract;
+using System.IO;
 using System.Drawing;
 
 namespace PUBG_Live_stats__Framework_
@@ -9,6 +10,8 @@ namespace PUBG_Live_stats__Framework_
     /// </summary>
     public class ImageProcessor
         {
+        public static int _x = Convert.ToInt32(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width * 0.21875), _y = Convert.ToInt32(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height * 0.0925925925925926 * 0.23);
+
 
         /// <summary>
         /// Capture the log region of the screen
@@ -16,11 +19,26 @@ namespace PUBG_Live_stats__Framework_
         /// <returns>The first bitmap, ready for image processing</returns>
         public Bitmap CaptureScreen()
             {
-            int _x = Convert.ToInt32(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width * 0.21875), _y = Convert.ToInt32(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height * 0.0925925925925926 * 0.23);
+            
+            //Define the region of the screen
             Rectangle rect = new Rectangle(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - _x, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Y + Convert.ToInt32(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height * 0.0925925925925926 * 0.77), _x, _y);
+
+            //Make a bitmap with the given region
             Bitmap bmp = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            
+            //Up the DPI to 600
+            bmp.SetResolution(600, 600); 
+
+            //Capture the screen from the Bitmap
             Graphics g = Graphics.FromImage(bmp);
             g.CopyFromScreen(rect.Left, rect.Top, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
+
+            return bmp;
+            }
+
+
+        public Bitmap EditImageContrast(Bitmap bmp)
+            {
 
             return bmp;
             }
@@ -43,11 +61,11 @@ namespace PUBG_Live_stats__Framework_
             };
                 System.Drawing.Imaging.ImageAttributes ia = new System.Drawing.Imaging.ImageAttributes();
                 ia.SetColorMatrix(new System.Drawing.Imaging.ColorMatrix(gray_matrix));
-                ia.SetThreshold(0.76f); //Change this threshold as needed
+                ia.SetThreshold(0.62f); //Change this threshold as needed
                 Rectangle rc = new Rectangle(0, 0, bmp.Width, bmp.Height);
                 gr.DrawImage(bmp, rc, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, ia);
                 }
-            bmp.Save(@"C:\Users\Marcus\Desktop\PUBG Live stats\ocr.png");
+            bmp.Save($@"C:\Users\Marcus\Desktop\PUBG Live stats\images\ocr{Directory.GetFiles(@"C:\Users\Marcus\Desktop\PUBG Live stats\images", "*.*").Length}.png");
             return bmp;
             }
 

@@ -24,8 +24,9 @@ namespace PUBG_Live_stats__Framework_
                     {
                     Statistic.AddADeath();
                     }
-                ReadOuts.Add(_string);
+                //ReadOuts.Add(_string);
                 }
+            ReadOuts.Add(_string);
             }
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace PUBG_Live_stats__Framework_
             StreamWriter writer = new StreamWriter($@"{_outputPath}\end.txt");
             for (int i = 0; i < ReadOuts.Count; i++)
                 {
-                writer.WriteLine(ReadOuts[i]);
+                writer.WriteLine(i.ToString() + " " + ReadOuts[i]);
                 }
             ReadOuts.Clear();
             writer.Close();
