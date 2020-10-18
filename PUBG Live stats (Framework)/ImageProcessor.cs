@@ -27,7 +27,7 @@ namespace PUBG_Live_stats__Framework_
             Bitmap bmp = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             
             //Up the DPI to 600
-            bmp.SetResolution(600, 600); 
+            bmp.SetResolution(600, 600);
 
             //Capture the screen from the Bitmap
             Graphics g = Graphics.FromImage(bmp);
